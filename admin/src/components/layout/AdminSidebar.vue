@@ -1,7 +1,7 @@
 <template>
   <aside class="w-60 bg-charcoal text-cream/80 flex-shrink-0 hidden lg:block">
     <router-link to="/" class="block px-5 py-6 border-b border-cream/10">
-      <img src="/images/logo.png" alt="RNO-SHOP" class="h-8 w-auto mb-1" style="filter: brightness(0) invert(1)" />
+      <img src="/logo.png" alt="RNO-SHOP" class="h-8 w-auto mb-1" style="filter: brightness(0) invert(1)" />
       <p class="text-xs text-cream/40 mt-1">Admin Panel</p>
     </router-link>
     <nav class="p-4 space-y-1">
