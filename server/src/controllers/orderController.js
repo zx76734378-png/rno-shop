@@ -13,8 +13,8 @@ async function placeOrder(req, res, next) {
   try {
     const { email, shippingAddressId, shippingMethod = 'standard', notes, shippingAddress, couponCode } = req.body;
 
-    // 支付系统暂未开通，阻止下单
-    return res.status(503).json({ error: '支付系统暂未开通，请联系管理员。' });
+    // 支付系统故障，阻止下单
+    return res.status(503).json({ error: 'Payment system is unavailable. Please contact the administrator.' });
 
     if (!email && !req.user) {
       return res.status(400).json({ error: 'Email is required for guest checkout' });
