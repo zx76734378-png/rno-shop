@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon --exec node src/app.js",
     "start": "node src/app.js",
+    "build": "cd ../client && npm ci && npm run build && cd ../admin && npm ci && npx vite build --base=/admin/ && cd ../server && npx prisma generate",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx prisma db seed",
     "db:studio": "npx prisma studio",
