@@ -11,8 +11,8 @@ COPY server/package*.json ./server/
 COPY client/package*.json ./client/
 COPY admin/package*.json ./admin/
 
-# Install all dependencies
-RUN cd server && npm ci --omit=dev && cd ..
+# Install all dependencies (server needs dev deps for prisma generate)
+RUN cd server && npm ci && cd ..
 RUN cd client && npm ci && cd ..
 RUN cd admin && npm ci && cd ..
 
@@ -22,7 +22,6 @@ COPY client/ ./client/
 COPY admin/ ./admin/
 
 # Generate Prisma client (PostgreSQL)
-COPY server/prisma ./server/prisma/
 RUN cd server && npx prisma generate
 
 # Build Vue frontends
