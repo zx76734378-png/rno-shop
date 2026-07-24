@@ -1,4 +1,8 @@
 FROM node:20-alpine
+
+# Prisma needs OpenSSL on Alpine
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # Copy all source (node_modules excluded via .dockerignore)
