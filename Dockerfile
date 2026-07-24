@@ -53,4 +53,4 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Use shell form to allow env var substitution for DATABASE_URL
-CMD cd /app/server && npx prisma db push --skip-generate && node src/app.js
+CMD cd /app/server && npx prisma db push --skip-generate && npx prisma db seed && node src/app.js

@@ -1,16 +1,14 @@
 // ============================================
-// SQLite Schema - For Local Development Only
-// Copy to schema.prisma for local dev
+// PostgreSQL Schema - Production (Supabase)
+// Local dev: replace provider with "sqlite"
 // ============================================
-// To use: copy schema.sqlite.prisma schema.prisma
-// Then: npx prisma generate && npx prisma migrate dev
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

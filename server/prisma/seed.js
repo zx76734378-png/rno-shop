@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...\n');
 
+  // Check if already seeded (idempotent)
+  const existingAdmin = await prisma.user.findFirst({ where: { isAdmin: true } });
+  if (existingAdmin) {
+    console.log('Database already seeded, skipping.');
+    return;
+  }
+
   // ==================== Clean ====================
   await prisma.cartItem.deleteMany();
   await prisma.cart.deleteMany();
