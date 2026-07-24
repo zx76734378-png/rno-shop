@@ -184,6 +184,19 @@ async function adminUploadProductImage(req, res, next) {
   }
 }
 
+async function adminAddProductImageUrl(req, res, next) {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ error: 'URL is required' });
+    const image = await prisma.productImage.create({
+      data: { productId: req.params.id, url },
+    });
+    res.status(201).json({ image });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function adminDeleteProductImage(req, res, next) {
   try {
     const image = await prisma.productImage.findFirst({
@@ -585,7 +598,7 @@ async function adminUploadMedia(req, res, next) {
 
 module.exports = {
   getDashboard,
-  adminGetProducts, adminGetProduct, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminUploadProductImage, adminDeleteProductImage,
+  adminGetProducts, adminGetProduct, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminUploadProductImage, adminAddProductImageUrl, adminDeleteProductImage,
   adminGetCategories, adminCreateCategory, adminUpdateCategory, adminDeleteCategory,
   adminGetOrders, adminGetOrder, adminUpdateOrderStatus,
   adminGetUsers, adminGetUser,

@@ -156,16 +156,28 @@ async function uploadSingle(item, index) {
 
   item.uploading = true;
   try {
+    // Upload directly to Cloudinary (not via Render server)
     const formData = new FormData();
-    formData.append('image', item.file);
-    await api.post(`/admin/products/${productId}/images`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    formData.append('file', item.file);
+    formData.append('upload_preset', 'rno_shop_upload');
+
+    const cloudRes = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', {
+      method: 'POST',
+      body: formData,
     });
+    const cloudData = await cloudRes.json();
+
+    if (!cloudData.secure_url) {
+      throw new Error(cloudData.error?.message || 'Upload failed');
+    }
+
+    // Save the Cloudinary URL to database
+    await api.post(`/admin/products/${productId}/images/by-url`, { url: cloudData.secure_url });
     item.done = true;
     // Refresh images
     await loadExistingImages();
   } catch (err) {
-    item.error = err.response?.data?.error || 'Upload failed';
+    item.error = err.message || 'Upload failed';
   } finally {
     item.uploading = false;
   }

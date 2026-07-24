@@ -18,6 +18,7 @@ router.post('/admin/products', ctrl.adminCreateProduct);
 router.put('/admin/products/:id', ctrl.adminUpdateProduct);
 router.delete('/admin/products/:id', ctrl.adminDeleteProduct);
 router.post('/admin/products/:id/images', upload.single('image'), ctrl.adminUploadProductImage);
+router.post('/admin/products/:id/images/by-url', ctrl.adminAddProductImageUrl);
 router.delete('/admin/products/:id/images/:imageId', ctrl.adminDeleteProductImage);
 
 // Categories
