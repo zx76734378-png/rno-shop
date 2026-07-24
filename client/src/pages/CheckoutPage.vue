@@ -60,8 +60,7 @@
 
         <section class="mb-10">
           <h2 class="font-serif text-xl mb-4">Payment</h2>
-          <p class="text-sm text-charcoal/50 mb-4">This is a demo. No real payment will be processed.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="md:col-span-2"><label class="text-sm mb-1 block">Card Number</label><input v-model="form.cardNumber" placeholder="4242 4242 4242 4242" class="input-field" /></div>
             <div><label class="text-sm mb-1 block">Expiry</label><input v-model="form.cardExpiry" placeholder="MM/YY" class="input-field" /></div>
             <div><label class="text-sm mb-1 block">CVC</label><input v-model="form.cardCvc" placeholder="123" class="input-field" /></div>
