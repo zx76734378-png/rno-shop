@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-charcoal bg-cream;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-sage text-white text-sm font-medium tracking-wide uppercase hover:bg-sage-dark transition-colors duration-300;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3 border border-sage text-sage text-sm font-medium tracking-wide uppercase hover:bg-sage hover:text-white transition-colors duration-300;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-charcoal/70 hover:text-charcoal transition-colors duration-300 underline underline-offset-4;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 bg-white text-charcoal placeholder-gray-400 focus:outline-none focus:border-sage focus:ring-1 focus:ring-sage transition-colors;
+  }
+
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl text-center mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-charcoal/60 text-center mb-12 max-w-xl mx-auto;
+  }
+
+  .product-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10;
+  }
+
+  .badge {
+    @apply inline-block px-2 py-1 text-xs font-medium uppercase tracking-wider;
+  }
+
+  .badge-new {
+    @apply badge bg-sage text-white;
+  }
+
+  .badge-bestseller {
+    @apply badge bg-charcoal text-cream;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Smooth transitions */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Cart drawer slide */
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-enter-from, .slide-leave-to {
+  transform: translateX(100%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
