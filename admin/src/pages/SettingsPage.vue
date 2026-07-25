@@ -111,31 +111,44 @@ async function uploadStoryImage() {
   if (!storyFile.value) return;
   storyUploading.value = true;
   storyMessage.value = '';
+
+  // Step 1: Upload to Cloudinary
+  let secureUrl;
   try {
     const fd = new FormData();
     fd.append('file', storyFile.value);
     fd.append('upload_preset', 'rno_shop_upload');
     const res = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', { method: 'POST', body: fd });
     const data = await res.json();
-    if (data.secure_url) {
-      // Save to DB
-      await api.put('/admin/settings', { settings: [{ key: 'story_image', value: data.secure_url, group: 'general' }] });
-      // Update local state
-      const s = settings.value.find(s => s.key === 'story_image');
-      if (s) s.value = data.secure_url;
-      cancelStoryUpload();
-      storyMessage.value = 'Image uploaded and saved!';
-      storyMessageType.value = 'success';
-    } else {
-      storyMessage.value = data.error?.message || 'Upload failed';
+    if (!data.secure_url) {
+      storyMessage.value = 'Cloudinary: ' + (data.error?.message || 'unknown error');
       storyMessageType.value = 'error';
+      storyUploading.value = false;
+      return;
     }
+    secureUrl = data.secure_url;
   } catch (err) {
-    storyMessage.value = 'Upload failed';
+    storyMessage.value = 'Network error uploading image. Please try again.';
     storyMessageType.value = 'error';
-  } finally {
     storyUploading.value = false;
+    return;
   }
+
+  // Step 2: Save URL to database
+  try {
+    await api.put('/admin/settings', { settings: [{ key: 'story_image', value: secureUrl, group: 'general' }] });
+    const s = settings.value.find(s => s.key === 'story_image');
+    if (s) s.value = secureUrl;
+    cancelStoryUpload();
+    storyMessage.value = 'Image uploaded and saved!';
+    storyMessageType.value = 'success';
+  } catch (err) {
+    const msg = err.response?.data?.error || err.message || 'Failed to save';
+    storyMessage.value = 'Uploaded but save failed: ' + msg;
+    storyMessageType.value = 'error';
+  }
+
+  storyUploading.value = false;
 }
 
 async function removeStoryImage() {
