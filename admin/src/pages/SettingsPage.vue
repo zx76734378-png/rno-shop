@@ -12,9 +12,8 @@
             <button @click="s.value = ''; updateSetting(s)" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">&times;</button>
           </div>
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center hover:border-sage transition-colors cursor-pointer"
-            @click="$refs[`file_${s.id}`][0].click()">
+            @click="triggerUpload(s)">
             <p class="text-xs text-gray-400">Click to upload image</p>
-            <input :ref="`file_${s.id}`" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" @change="e => uploadSettingImage(e, s)" />
           </div>
           <p v-if="uploadingKey === s.key" class="text-xs text-blue-500 mt-1">Uploading...</p>
         </template>
@@ -24,6 +23,9 @@
       </div>
       <div class="text-sm text-gray-400 mt-4">Changes are saved automatically on blur.</div>
     </div>
+
+    <!-- Hidden shared file input for image uploads -->
+    <input ref="fileInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" @change="onFileChange" />
   </div>
 </template>
 
@@ -33,6 +35,8 @@ import api from '@/utils/api';
 
 const settings = ref([]);
 const uploadingKey = ref(null);
+const fileInput = ref(null);
+let pendingSetting = null;
 
 async function fetch() {
   const { data } = await api.get('/admin/settings');
@@ -42,22 +46,35 @@ async function fetch() {
     settings.value.push({ id: 'new_story_image', key: 'story_image', value: '', group: 'general' });
   }
 }
+
 async function updateSetting(s) {
   await api.put('/admin/settings', { settings: [{ key: s.key, value: s.value, group: s.group }] });
 }
 
-async function uploadSettingImage(e, s) {
+function triggerUpload(s) {
+  pendingSetting = s;
+  fileInput.value.click();
+}
+
+async function onFileChange(e) {
   const file = e.target.files[0];
-  if (!file) return;
-  uploadingKey.value = s.key;
+  if (!file || !pendingSetting) return;
+  uploadingKey.value = pendingSetting.key;
   try {
     const fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', 'rno_shop_upload');
     const res = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', { method: 'POST', body: fd });
     const data = await res.json();
-    if (data.secure_url) { s.value = data.secure_url; await updateSetting(s); }
-  } catch {} finally { uploadingKey.value = null; }
+    if (data.secure_url) {
+      pendingSetting.value = data.secure_url;
+      await updateSetting(pendingSetting);
+    }
+  } catch {} finally {
+    uploadingKey.value = null;
+    fileInput.value.value = '';
+    pendingSetting = null;
+  }
 }
 
 onMounted(fetch);
