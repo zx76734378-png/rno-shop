@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-4 py-4 border-b border-gray-100">
     <router-link :to="`/products/${item.product.slug}`" class="flex-shrink-0 w-20 h-24 bg-warm/50">
-      <img :src="item.image || 'https://picsum.photos/seed/placeholder/200/240'" :alt="item.product.name" class="w-full h-full object-cover" />
+      <img :src="item.image || 'https://picsum.photos/seed/placeholder/200/240'" :alt="item.product.name" class="w-full h-full object-contain" />
     </router-link>
     <div class="flex-1 min-w-0">
       <router-link :to="`/products/${item.product.slug}`" class="text-sm font-medium text-charcoal hover:text-sage transition-colors line-clamp-1">

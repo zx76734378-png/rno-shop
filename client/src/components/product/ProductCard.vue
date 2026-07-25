@@ -4,7 +4,7 @@
       <img
         :src="currentImage"
         :alt="product.name"
-        class="w-full aspect-[4/5] object-cover transition-opacity duration-500"
+        class="w-full aspect-[4/5] object-contain transition-opacity duration-500"
         loading="lazy"
       />
       <!-- Badges -->

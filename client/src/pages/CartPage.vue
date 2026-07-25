@@ -18,7 +18,7 @@
         <div class="space-y-0">
           <div v-for="item in cart.items" :key="item.id" class="flex gap-4 py-6 border-b border-gray-200">
             <router-link :to="`/products/${item.product.slug}`" class="flex-shrink-0 w-24 h-28 bg-warm/50">
-              <img :src="item.image || 'https://picsum.photos/seed/placeholder/200/240'" :alt="item.product.name" class="w-full h-full object-cover" />
+              <img :src="item.image || 'https://picsum.photos/seed/placeholder/200/240'" :alt="item.product.name" class="w-full h-full object-contain" />
             </router-link>
             <div class="flex-1">
               <router-link :to="`/products/${item.product.slug}`" class="font-serif text-lg hover:text-sage transition-colors">{{ item.product.name }}</router-link>

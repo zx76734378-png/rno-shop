@@ -6,7 +6,7 @@
       <!-- Image Gallery -->
       <div>
         <div class="aspect-[4/5] bg-warm/50 overflow-hidden mb-4">
-          <img :src="activeImage" :alt="product.name" class="w-full h-full object-cover" />
+          <img :src="activeImage" :alt="product.name" class="w-full h-full object-contain" />
         </div>
         <div v-if="product.images?.length > 1" class="grid grid-cols-4 gap-2">
           <button
@@ -15,7 +15,7 @@
             @click="activeIndex = i"
             :class="['aspect-square bg-warm/50 overflow-hidden border-2 transition-colors', i === activeIndex ? 'border-sage' : 'border-transparent']"
           >
-            <img :src="img.url" :alt="img.altText || product.name" class="w-full h-full object-cover" />
+            <img :src="img.url" :alt="img.altText || product.name" class="w-full h-full object-contain" />
           </button>
         </div>
       </div>
