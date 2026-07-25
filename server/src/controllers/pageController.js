@@ -146,4 +146,15 @@ async function getProductReviews(req, res, next) {
   }
 }
 
-module.exports = { getPage, getHeroBanners, getFaqs, getSiteSettings, getMemberships, subscribeMembership, subscribeNewsletter, createReview, getProductReviews };
+// GET /api/site-setting/:key
+async function getSiteSetting(req, res, next) {
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: req.params.key } });
+    if (!setting) return res.status(404).json({ value: null });
+    res.json({ value: setting.value });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getPage, getHeroBanners, getFaqs, getSiteSettings, getSiteSetting, getMemberships, subscribeMembership, subscribeNewsletter, createReview, getProductReviews };

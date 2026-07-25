@@ -4,7 +4,7 @@
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="relative aspect-[4/5] bg-warm/50 overflow-hidden">
           <img
-            src="https://picsum.photos/seed/garden-story/800/1000"
+            :src="storyImage"
             alt="RNO-SHOP Collection"
             class="w-full h-full object-cover"
           />
@@ -24,3 +24,17 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import api from '@/utils/api';
+
+const storyImage = ref('https://picsum.photos/seed/garden-story/800/1000');
+
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/site-setting/story_image');
+    if (data.value) storyImage.value = data.value;
+  } catch { /* use default */ }
+});
+</script>

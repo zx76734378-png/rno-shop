@@ -8,6 +8,7 @@ router.get('/pages/:slug', ctrl.getPage);
 router.get('/hero-banners', ctrl.getHeroBanners);
 router.get('/faqs', ctrl.getFaqs);
 router.get('/site-settings', ctrl.getSiteSettings);
+router.get('/site-setting/:key', ctrl.getSiteSetting);
 router.get('/memberships', ctrl.getMemberships);
 router.post('/memberships/subscribe', authenticate, ctrl.subscribeMembership);
 router.post('/newsletter/subscribe', ctrl.subscribeNewsletter);
