@@ -5,11 +5,24 @@
     <!-- Story Image Upload (same pattern as ProductEditPage) -->
     <div class="bg-white p-6 rounded-sm shadow-sm mb-6 max-w-xl">
       <label class="text-xs mb-2 block font-medium">Story Image (首页品牌故事图)</label>
-      <div v-if="storyImage" class="relative w-64 h-48 mb-3 rounded overflow-hidden bg-gray-100">
-        <img :src="storyImage" class="w-full h-full object-cover" />
+
+      <!-- Current saved image -->
+      <div v-if="storyImageUrl && !storyPreview" class="relative w-64 h-48 mb-3 rounded overflow-hidden bg-gray-100">
+        <img :src="storyImageUrl" class="w-full h-full object-cover" />
         <button @click="removeStoryImage" class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full text-sm flex items-center justify-center">&times;</button>
       </div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-sage transition-colors cursor-pointer"
+
+      <!-- New file preview before upload -->
+      <div v-if="storyPreview" class="flex items-center gap-3 p-2 bg-gray-50 rounded text-sm mb-3">
+        <img :src="storyPreview" class="w-12 h-12 object-cover rounded" />
+        <span class="flex-1 truncate">{{ storyFileName }}</span>
+        <button v-if="!storyUploading" @click="uploadStoryImage" class="admin-btn-primary text-xs">Upload</button>
+        <span v-else class="text-blue-500 text-xs">Uploading...</span>
+        <button @click="cancelStoryUpload" class="text-red-400 text-xs">&times;</button>
+      </div>
+
+      <!-- Drop zone -->
+      <div v-if="!storyPreview" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-sage transition-colors cursor-pointer"
         @click="$refs.storyFileInput.click()" @dragover.prevent @drop.prevent="handleStoryDrop">
         <svg class="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -20,7 +33,8 @@
         <p class="text-xs text-gray-400">PNG, JPG, WEBP up to 5MB</p>
         <input ref="storyFileInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" @change="handleStoryFile" />
       </div>
-      <p v-if="storyUploading" class="text-blue-500 text-xs mt-2">Uploading...</p>
+
+      <p v-if="storyMessage" :class="['text-xs mt-2', storyMessageType === 'error' ? 'text-red-500' : 'text-green-600']">{{ storyMessage }}</p>
     </div>
 
     <!-- Other Settings -->
@@ -40,14 +54,17 @@ import { ref, computed, onMounted } from 'vue';
 import api from '@/utils/api';
 
 const settings = ref([]);
+const storyFileInput = ref(null);
 const storyUploading = ref(false);
+const storyPreview = ref('');
+const storyFileName = ref('');
+const storyFile = ref(null);
+const storyMessage = ref('');
+const storyMessageType = ref('success');
 
-const storyImage = computed({
-  get: () => settings.value.find(s => s.key === 'story_image')?.value || '',
-  set: (val) => {
-    const s = settings.value.find(s => s.key === 'story_image');
-    if (s) s.value = val;
-  },
+const storyImageUrl = computed(() => {
+  const s = settings.value.find(s => s.key === 'story_image');
+  return s?.value || '';
 });
 
 const textSettings = computed(() => settings.value.filter(s => s.key !== 'story_image'));
@@ -64,40 +81,69 @@ async function updateSetting(s) {
   await api.put('/admin/settings', { settings: [{ key: s.key, value: s.value, group: s.group }] });
 }
 
-async function saveStoryImage(url) {
-  await api.put('/admin/settings', { settings: [{ key: 'story_image', value: url, group: 'general' }] });
-}
-
-async function uploadStoryImage(file) {
-  storyUploading.value = true;
-  try {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('upload_preset', 'rno_shop_upload');
-    const res = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', { method: 'POST', body: fd });
-    const data = await res.json();
-    if (data.secure_url) {
-      storyImage.value = data.secure_url;
-      await saveStoryImage(data.secure_url);
-    }
-  } catch {} finally {
-    storyUploading.value = false;
-  }
-}
-
 function handleStoryFile(e) {
   const file = e.target.files[0];
-  if (file) uploadStoryImage(file);
+  if (!file) return;
+  storyFile.value = file;
+  storyFileName.value = file.name;
+  storyPreview.value = URL.createObjectURL(file);
+  storyMessage.value = '';
+  // Reset input so same file can be re-selected
+  if (storyFileInput.value) storyFileInput.value.value = '';
 }
 
 function handleStoryDrop(e) {
   const file = e.dataTransfer.files[0];
-  if (file) uploadStoryImage(file);
+  if (!file) return;
+  storyFile.value = file;
+  storyFileName.value = file.name;
+  storyPreview.value = URL.createObjectURL(file);
+  storyMessage.value = '';
+}
+
+function cancelStoryUpload() {
+  storyFile.value = null;
+  storyFileName.value = '';
+  storyPreview.value = '';
+}
+
+async function uploadStoryImage() {
+  if (!storyFile.value) return;
+  storyUploading.value = true;
+  storyMessage.value = '';
+  try {
+    const fd = new FormData();
+    fd.append('file', storyFile.value);
+    fd.append('upload_preset', 'rno_shop_upload');
+    const res = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.secure_url) {
+      // Save to DB
+      await api.put('/admin/settings', { settings: [{ key: 'story_image', value: data.secure_url, group: 'general' }] });
+      // Update local state
+      const s = settings.value.find(s => s.key === 'story_image');
+      if (s) s.value = data.secure_url;
+      cancelStoryUpload();
+      storyMessage.value = 'Image uploaded and saved!';
+      storyMessageType.value = 'success';
+    } else {
+      storyMessage.value = data.error?.message || 'Upload failed';
+      storyMessageType.value = 'error';
+    }
+  } catch (err) {
+    storyMessage.value = 'Upload failed';
+    storyMessageType.value = 'error';
+  } finally {
+    storyUploading.value = false;
+  }
 }
 
 async function removeStoryImage() {
-  storyImage.value = '';
-  await saveStoryImage('');
+  await api.put('/admin/settings', { settings: [{ key: 'story_image', value: '', group: 'general' }] });
+  const s = settings.value.find(s => s.key === 'story_image');
+  if (s) s.value = '';
+  storyMessage.value = 'Image removed';
+  storyMessageType.value = 'success';
 }
 
 onMounted(fetch);

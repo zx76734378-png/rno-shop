@@ -72,6 +72,7 @@ const categories = ref([]);
 const showForm = ref(false);
 const editingId = ref(null);
 const uploadingImage = ref(false);
+const catFileInput = ref(null);
 const form = reactive({ name: '', description: '', parentId: '', isActive: true, image: '' });
 
 function openNew() {

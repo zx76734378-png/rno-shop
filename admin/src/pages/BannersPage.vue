@@ -72,6 +72,7 @@ import { ref, reactive, onMounted } from 'vue';
 import api from '@/utils/api';
 
 const banners = ref([]); const showForm = ref(false); const saving = ref(false); const editingId = ref(null); const uploading = ref(null);
+const desktopInput = ref(null); const mobileInput = ref(null);
 const emptyForm = { title: '', subtitle: '', imageDesktop: '', imageMobile: '', buttonText: '', buttonLink: '' };
 const form = reactive({ ...emptyForm });
 
