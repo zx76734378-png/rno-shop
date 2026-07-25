@@ -6,7 +6,7 @@
           <img
             :src="storyImage"
             alt="RNO-SHOP Collection"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-contain"
           />
         </div>
         <div class="max-w-lg">
