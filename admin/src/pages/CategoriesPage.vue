@@ -112,7 +112,7 @@ async function uploadCatImage(e) {
   } catch {} finally { uploadingImage.value = false; }
 }
 
-async function fetch() {
+async function loadCategories() {
   const { data } = await api.get('/admin/categories');
   categories.value = data.categories;
 }
@@ -131,14 +131,14 @@ async function saveCategory() {
     await api.post('/admin/categories', payload);
   }
   closeForm();
-  await fetch();
+  await loadCategories();
 }
 
 async function deleteCategory(id) {
   if (!confirm('Delete this category?')) return;
   await api.delete(`/admin/categories/${id}`);
-  await fetch();
+  await loadCategories();
 }
 
-onMounted(fetch);
+onMounted(loadCategories);
 </script>

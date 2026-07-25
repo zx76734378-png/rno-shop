@@ -76,7 +76,7 @@ const desktopInput = ref(null); const mobileInput = ref(null);
 const emptyForm = { title: '', subtitle: '', imageDesktop: '', imageMobile: '', buttonText: '', buttonLink: '' };
 const form = reactive({ ...emptyForm });
 
-async function fetch() { const { data } = await api.get('/admin/banners'); banners.value = data.banners; }
+async function loadBanners() { const { data } = await api.get('/admin/banners'); banners.value = data.banners; }
 
 function openCreate() { editingId.value = null; Object.assign(form, emptyForm); showForm.value = true; }
 function editBanner(b) { editingId.value = b.id; Object.assign(form, { title: b.title, subtitle: b.subtitle || '', imageDesktop: b.imageDesktop, imageMobile: b.imageMobile || '', buttonText: b.buttonText || '', buttonLink: b.buttonLink || '' }); showForm.value = true; }
@@ -91,7 +91,7 @@ async function submitForm() {
       await api.post('/admin/banners', form);
     }
     cancelForm();
-    await fetch();
+    await loadBanners();
   } finally { saving.value = false; }
 }
 
@@ -109,6 +109,6 @@ async function uploadBannerImage(e, field) {
   } catch {} finally { uploading.value = null; }
 }
 
-async function deleteBanner(id) { if (!confirm('Delete?')) return; await api.delete(`/admin/banners/${id}`); await fetch(); }
-onMounted(fetch);
+async function deleteBanner(id) { if (!confirm('Delete?')) return; await api.delete(`/admin/banners/${id}`); await loadBanners(); }
+onMounted(loadBanners);
 </script>

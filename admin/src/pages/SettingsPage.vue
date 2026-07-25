@@ -71,7 +71,7 @@ const storyImageUrl = computed(() => {
 
 const textSettings = computed(() => settings.value.filter(s => s.key !== 'story_image'));
 
-async function fetch() {
+async function loadSettings() {
   const { data } = await api.get('/admin/settings');
   settings.value = data.settings;
   if (!settings.value.find(s => s.key === 'story_image')) {
@@ -161,5 +161,5 @@ async function removeStoryImage() {
   storyMessageType.value = 'success';
 }
 
-onMounted(fetch);
+onMounted(loadSettings);
 </script>
