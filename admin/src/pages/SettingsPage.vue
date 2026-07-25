@@ -58,9 +58,11 @@ const storyFileInput = ref(null);
 const storyUploading = ref(false);
 const storyPreview = ref('');
 const storyFileName = ref('');
-const storyFile = ref(null);
 const storyMessage = ref('');
 const storyMessageType = ref('success');
+
+// Store raw File outside Vue reactivity to avoid Proxy-wrapping issues with FormData
+let _rawStoryFile = null;
 
 const storyImageUrl = computed(() => {
   const s = settings.value.find(s => s.key === 'story_image');
@@ -84,7 +86,7 @@ async function updateSetting(s) {
 function handleStoryFile(e) {
   const file = e.target.files[0];
   if (!file) return;
-  storyFile.value = file;
+  _rawStoryFile = file;
   storyFileName.value = file.name;
   storyPreview.value = URL.createObjectURL(file);
   storyMessage.value = '';
@@ -95,20 +97,20 @@ function handleStoryFile(e) {
 function handleStoryDrop(e) {
   const file = e.dataTransfer.files[0];
   if (!file) return;
-  storyFile.value = file;
+  _rawStoryFile = file;
   storyFileName.value = file.name;
   storyPreview.value = URL.createObjectURL(file);
   storyMessage.value = '';
 }
 
 function cancelStoryUpload() {
-  storyFile.value = null;
+  _rawStoryFile = null;
   storyFileName.value = '';
   storyPreview.value = '';
 }
 
 async function uploadStoryImage() {
-  if (!storyFile.value) return;
+  if (!_rawStoryFile) return;
   storyUploading.value = true;
   storyMessage.value = '';
 
@@ -116,7 +118,7 @@ async function uploadStoryImage() {
   let secureUrl;
   try {
     const fd = new FormData();
-    fd.append('file', storyFile.value);
+    fd.append('file', _rawStoryFile);
     fd.append('upload_preset', 'rno_shop_upload');
     const res = await fetch('https://api.cloudinary.com/v1_1/oy1ugvxg/image/upload', { method: 'POST', body: fd });
     const data = await res.json();
@@ -128,7 +130,7 @@ async function uploadStoryImage() {
     }
     secureUrl = data.secure_url;
   } catch (err) {
-    storyMessage.value = 'Network error uploading image. Please try again.';
+    storyMessage.value = 'Cloudinary request failed: ' + (err.message || err);
     storyMessageType.value = 'error';
     storyUploading.value = false;
     return;
