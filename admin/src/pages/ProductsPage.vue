@@ -19,6 +19,7 @@
             <td><span :class="p.isActive ? 'text-green-600' : 'text-red-500'">{{ p.isActive ? 'Active' : 'Inactive' }}</span></td>
             <td>
               <router-link :to="`/products/${p.id}/edit`" class="text-sage hover:underline text-xs">Edit</router-link>
+              <button @click="deleteProduct(p.id)" class="text-red-500 hover:underline text-xs ml-3">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -48,6 +49,8 @@ async function fetch() {
   total.value = data.total;
   totalPages.value = data.totalPages;
 }
+
+async function deleteProduct(id) { if (!confirm('Delete this product?')) return; await api.delete(`/admin/products/${id}`); await fetch(); }
 
 onMounted(fetch);
 </script>

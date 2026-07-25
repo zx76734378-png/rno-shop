@@ -90,6 +90,7 @@
       <div class="flex gap-3 pt-4">
         <button type="submit" :disabled="saving" class="admin-btn-primary">{{ saving ? 'Saving...' : 'Save Product' }}</button>
         <router-link to="/products" class="admin-btn-outline">Cancel</router-link>
+        <button v-if="!isNew" type="button" @click="deleteProduct" :disabled="deleting" class="admin-btn-outline text-red-500 border-red-300 hover:bg-red-50">{{ deleting ? 'Deleting...' : 'Delete Product' }}</button>
       </div>
       <p v-if="message" :class="['text-sm', messageType === 'error' ? 'text-red-500' : 'text-sage']">{{ message }}</p>
     </form>
@@ -251,6 +252,21 @@ async function saveProduct() {
 
 async function save() {
   await saveProduct();
+}
+
+const deleting = ref(false);
+async function deleteProduct() {
+  if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
+  deleting.value = true;
+  try {
+    await api.delete(`/admin/products/${productId}`);
+    router.push('/products');
+  } catch (err) {
+    message.value = err.response?.data?.error || 'Failed to delete';
+    messageType.value = 'error';
+  } finally {
+    deleting.value = false;
+  }
 }
 
 onMounted(async () => {

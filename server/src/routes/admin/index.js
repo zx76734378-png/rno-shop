@@ -52,6 +52,7 @@ router.delete('/admin/banners/:id', ctrl.adminDeleteBanner);
 // Coupons
 router.get('/admin/coupons', ctrl.adminGetCoupons);
 router.post('/admin/coupons', ctrl.adminCreateCoupon);
+router.put('/admin/coupons/:id', ctrl.adminUpdateCoupon);
 router.delete('/admin/coupons/:id', ctrl.adminDeleteCoupon);
 
 // Reviews

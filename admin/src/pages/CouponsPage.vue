@@ -2,18 +2,18 @@
   <div>
     <div class="flex items-center justify-between mb-6">
       <h2 class="font-serif text-xl">Coupons</h2>
-      <button @click="showForm = true" v-if="!showForm" class="admin-btn-primary">+ New Coupon</button>
+      <button @click="openCreate" v-if="!showForm" class="admin-btn-primary">+ New Coupon</button>
     </div>
 
-    <form v-if="showForm" @submit.prevent="createCoupon" class="bg-white p-4 rounded-sm shadow-sm mb-6 max-w-md space-y-3">
+    <form v-if="showForm" @submit.prevent="submitForm" class="bg-white p-4 rounded-sm shadow-sm mb-6 max-w-md space-y-3">
       <input v-model="form.code" placeholder="Code (e.g., WELCOME10)" required class="admin-input" />
       <div class="flex gap-3">
         <select v-model="form.type" class="admin-input flex-1"><option value="percentage">Percentage</option><option value="fixed">Fixed Amount</option></select>
         <input v-model.number="form.value" type="number" step="0.01" placeholder="Value" required class="admin-input w-32" />
       </div>
       <div class="flex gap-3">
-        <button type="submit" :disabled="creating" class="admin-btn-primary text-xs">{{ creating ? '...' : 'Create' }}</button>
-        <button type="button" @click="showForm = false" class="admin-btn-outline text-xs">Cancel</button>
+        <button type="submit" :disabled="saving" class="admin-btn-primary text-xs">{{ saving ? '...' : (editingId ? 'Update' : 'Create') }}</button>
+        <button type="button" @click="cancelForm" class="admin-btn-outline text-xs">Cancel</button>
       </div>
     </form>
 
@@ -26,7 +26,7 @@
             <td>{{ c.type === 'percentage' ? `${c.value}%` : formatPrice(c.value) }}</td>
             <td>{{ c.usedCount }}{{ c.usageLimit ? ` / ${c.usageLimit}` : '' }}</td>
             <td><span :class="c.isActive ? 'text-green-600' : 'text-red-500'">{{ c.isActive ? 'Yes' : 'No' }}</span></td>
-            <td><button @click="deleteCoupon(c.id)" class="text-red-500 hover:underline text-xs">Delete</button></td>
+            <td><button @click="editCoupon(c)" class="text-sage hover:underline text-xs mr-3">Edit</button><button @click="deleteCoupon(c.id)" class="text-red-500 hover:underline text-xs">Delete</button></td>
           </tr>
         </tbody>
       </table>
@@ -39,15 +39,29 @@ import { ref, reactive, onMounted } from 'vue';
 import api from '@/utils/api';
 import { formatPrice } from '@/utils/format';
 
-const coupons = ref([]); const showForm = ref(false); const creating = ref(false);
-const form = reactive({ code: '', type: 'percentage', value: 10 });
+const coupons = ref([]); const showForm = ref(false); const saving = ref(false); const editingId = ref(null);
+const emptyForm = { code: '', type: 'percentage', value: 10 };
+const form = reactive({ ...emptyForm });
 
 async function fetch() { const { data } = await api.get('/admin/coupons'); coupons.value = data.coupons; }
-async function createCoupon() {
-  creating.value = true;
-  try { await api.post('/admin/coupons', form); showForm.value = false; Object.assign(form, { code: '', type: 'percentage', value: 10 }); await fetch(); }
-  finally { creating.value = false; }
+
+function openCreate() { editingId.value = null; Object.assign(form, emptyForm); showForm.value = true; }
+function editCoupon(c) { editingId.value = c.id; Object.assign(form, { code: c.code, type: c.type, value: c.value }); showForm.value = true; }
+function cancelForm() { showForm.value = false; editingId.value = null; }
+
+async function submitForm() {
+  saving.value = true;
+  try {
+    if (editingId.value) {
+      await api.put(`/admin/coupons/${editingId.value}`, form);
+    } else {
+      await api.post('/admin/coupons', form);
+    }
+    cancelForm();
+    await fetch();
+  } finally { saving.value = false; }
 }
+
 async function deleteCoupon(id) { if (!confirm('Delete?')) return; await api.delete(`/admin/coupons/${id}`); await fetch(); }
 onMounted(fetch);
 </script>

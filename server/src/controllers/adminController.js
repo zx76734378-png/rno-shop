@@ -481,6 +481,19 @@ async function adminCreateCoupon(req, res, next) {
   }
 }
 
+async function adminUpdateCoupon(req, res, next) {
+  try {
+    const { code, type, value, minOrderAmount, usageLimit, isActive, startsAt, expiresAt } = req.body;
+    const coupon = await prisma.coupon.update({
+      where: { id: req.params.id },
+      data: { code, type, value, minOrderAmount, usageLimit, isActive, startsAt: startsAt ? new Date(startsAt) : null, expiresAt: expiresAt ? new Date(expiresAt) : null },
+    });
+    res.json({ coupon });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function adminDeleteCoupon(req, res, next) {
   try {
     await prisma.coupon.delete({ where: { id: req.params.id } });
@@ -604,7 +617,7 @@ module.exports = {
   adminGetUsers, adminGetUser,
   adminGetPages, adminGetPage, adminCreatePage, adminUpdatePage, adminDeletePage,
   adminGetBanners, adminCreateBanner, adminUpdateBanner, adminDeleteBanner,
-  adminGetCoupons, adminCreateCoupon, adminDeleteCoupon,
+  adminGetCoupons, adminCreateCoupon, adminUpdateCoupon, adminDeleteCoupon,
   adminGetReviews, adminApproveReview, adminDeleteReview,
   adminGetSettings, adminUpdateSettings,
   adminGetMedia, adminUploadMedia,
