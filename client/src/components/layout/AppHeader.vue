@@ -11,7 +11,7 @@
 
         <!-- Logo -->
         <router-link to="/" class="flex-shrink-0">
-          <img src="/images/logo.png" alt="RNO-SHOP" class="h-16 md:h-20 w-auto" />
+          <img src="/images/logo.png" alt="LVON-SHOP" class="h-16 md:h-20 w-auto" />
         </router-link>
 
         <!-- Desktop Navigation -->

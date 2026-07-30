@@ -1,4 +1,4 @@
-# RNO-SHOP
+# LVON-SHOP
 
 A full-stack e-commerce website for international modern home essentials, built for learning purposes.
 
@@ -42,7 +42,7 @@ npm run dev
 
 ### Default Admin Account
 
-- Email: `admin@rno-shop.com`
+- Email: `admin@lvon-shop.com`
 - Password: `password123`
 
 ### Test Customer Account

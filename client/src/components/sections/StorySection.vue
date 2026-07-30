@@ -5,7 +5,7 @@
         <div class="relative aspect-[4/5] bg-warm/50 overflow-hidden">
           <img
             :src="storyImage"
-            alt="RNO-SHOP Collection"
+            alt="LVON-SHOP Collection"
             class="w-full h-full object-contain"
           />
         </div>
@@ -13,7 +13,7 @@
           <p class="text-sage text-sm uppercase tracking-widest mb-4">Our Philosophy</p>
           <h2 class="font-serif text-3xl md:text-4xl mb-6 leading-tight">Quality Living Starts at Home</h2>
           <p class="text-charcoal/60 leading-relaxed mb-6">
-            RNO-SHOP brings you a carefully curated collection of modern home essentials. From luxury fragrances to body care and pantry staples, every product is selected for its quality, craftsmanship, and ability to elevate your daily rituals.
+            LVON-SHOP brings you a carefully curated collection of modern home essentials. From luxury fragrances to body care and pantry staples, every product is selected for its quality, craftsmanship, and ability to elevate your daily rituals.
           </p>
           <p class="text-charcoal/60 leading-relaxed mb-8">
             We partner with artisans and brands from around the world to bring you products that are both beautiful and functional. Every item in our collection tells a story of dedication, tradition, and modern living.

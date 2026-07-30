@@ -44,7 +44,7 @@ async function main() {
   const passwordHash = await bcrypt.hash('password123', 12);
 
   const admin = await prisma.user.create({
-    data: { email: 'admin@rno-shop.com', passwordHash, firstName: 'RNO', lastName: 'Admin', isAdmin: true },
+    data: { email: 'admin@lvon-shop.com', passwordHash, firstName: 'LVON', lastName: 'Admin', isAdmin: true },
   });
 
   const customer = await prisma.user.create({
@@ -86,7 +86,7 @@ async function main() {
     { name: 'Room Spray – Euphoria', slug: 'room-spray-euphoria', price: 44, shortDesc: 'Uplifting and joyful. A burst of citrus and florals.', description: '<p>Euphoria blends bergamot, neroli, and jasmine for an uplifting, joyful atmosphere that brightens any space.</p>', stockQuantity: 65, images: ['https://picsum.photos/seed/spray-euphoria-1/800/1000'], variants: [{ name: '4 oz', price: 44, stockQuantity: 65 }], categories: [0] },
     { name: 'Dish Soap – Garden Essentials', slug: 'dish-soap-garden-essentials', price: 24, shortDesc: 'Plant-based dish soap that actually works.', description: '<p>A powerful plant-based dish soap that cuts through grease while being gentle on your hands and the planet. Scented with garden-fresh herbs.</p>', stockQuantity: 100, images: ['https://picsum.photos/seed/dish-soap-1/800/1000'], variants: [{ name: '16 oz', price: 24, stockQuantity: 100 }], categories: [7] },
     { name: 'Surface Cleaner – Rosemary', slug: 'surface-cleaner-rosemary', price: 22, shortDesc: 'Non-toxic multi-surface cleaner with rosemary.', description: '<p>An effective, non-toxic cleaner for all surfaces. Rosemary essential oil provides natural antibacterial properties and a fresh, clean scent.</p>', stockQuantity: 90, images: ['https://picsum.photos/seed/surface-cleaner-1/800/1000'], variants: [{ name: '16 oz', price: 22, stockQuantity: 90 }], categories: [7] },
-    { name: 'The Estate Gift Set', slug: 'estate-gift-set', price: 148, comparePrice: 180, shortDesc: 'Our signature collection in a beautiful gift box.', description: '<p>The perfect introduction to RNO-SHOP. Includes our Roma Heirloom Tomato Candle, Garden Essentials Soap Brick, Botanical Hand Soap, and Botanical Hand Lotion in a beautiful gift box.</p>', stockQuantity: 25, isBestSeller: true, images: ['https://picsum.photos/seed/gift-set-1/800/1000', 'https://picsum.photos/seed/gift-set-2/800/1000'], categories: [8] },
+    { name: 'The Estate Gift Set', slug: 'estate-gift-set', price: 148, comparePrice: 180, shortDesc: 'Our signature collection in a beautiful gift box.', description: '<p>The perfect introduction to LVON-SHOP. Includes our Roma Heirloom Tomato Candle, Garden Essentials Soap Brick, Botanical Hand Soap, and Botanical Hand Lotion in a beautiful gift box.</p>', stockQuantity: 25, isBestSeller: true, images: ['https://picsum.photos/seed/gift-set-1/800/1000', 'https://picsum.photos/seed/gift-set-2/800/1000'], categories: [8] },
     { name: 'Exfoliating Body Scrub', slug: 'exfoliating-body-scrub', price: 52, shortDesc: 'Sea salt and botanical oil scrub for silky smooth skin.', description: '<p>A luxurious body scrub blending fine sea salt with a nourishing cocktail of jojoba, almond, and olive oils. Gently exfoliates while deeply moisturizing.</p>', stockQuantity: 55, isNew: true, images: ['https://picsum.photos/seed/body-scrub-1/800/1000'], variants: [{ name: '8 oz', price: 52, stockQuantity: 55 }], categories: [1] },
     { name: 'Fleur de Citron Candle', slug: 'fleur-de-citron-candle', price: 62, shortDesc: 'Bright citrus blossoms with a warm, sunny finish.', description: '<p>Sun-warmed citrus trees in bloom. This candle captures the essence of a Mediterranean lemon grove with notes of lemon blossom, petitgrain, and a hint of honey.</p>', stockQuantity: 70, images: ['https://picsum.photos/seed/citron-candle-1/800/1000', 'https://picsum.photos/seed/citron-candle-2/800/1000'], variants: [{ name: '8 oz', price: 62, stockQuantity: 70 }], categories: [0] },
     { name: 'Adriatic Muscatel Sage Candle', slug: 'adriatic-muscatel-sage-candle', price: 66, shortDesc: 'Herbaceous sage with sun-warmed Adriatic coastal breeze.', description: '<p>Inspired by the wild sage that grows along the Adriatic coast. Clean, herbaceous, and transporting.</p>', stockQuantity: 45, images: ['https://picsum.photos/seed/sage-candle-1/800/1000'], variants: [{ name: '8 oz', price: 66, stockQuantity: 45 }], categories: [0] },
@@ -129,18 +129,18 @@ async function main() {
     data: [
       {
         title: 'The Estate', slug: 'the-estate', isPublished: true, sortOrder: 1,
-        content: `<h2>Welcome to RNO-SHOP</h2><p>RNO-SHOP is your destination for international modern home essentials. We curate the finest fragrances, body care, and home goods from around the world.</p><p>Every product in our collection is selected for its quality, craftsmanship, and ability to elevate your daily rituals. From luxury candles to organic pantry staples, we bring you the best of modern living.</p><h3>Our Philosophy</h3><p>We believe that quality living starts at home. We partner with artisans and brands who share our commitment to excellence, sustainability, and timeless design.</p>`,
-        metaTitle: 'The Estate - RNO-SHOP', metaDescription: 'Discover the story behind RNO-SHOP, your destination for international modern home essentials.'
+        content: `<h2>Welcome to LVON-SHOP</h2><p>LVON-SHOP is your destination for international modern home essentials. We curate the finest fragrances, body care, and home goods from around the world.</p><p>Every product in our collection is selected for its quality, craftsmanship, and ability to elevate your daily rituals. From luxury candles to organic pantry staples, we bring you the best of modern living.</p><h3>Our Philosophy</h3><p>We believe that quality living starts at home. We partner with artisans and brands who share our commitment to excellence, sustainability, and timeless design.</p>`,
+        metaTitle: 'The Estate - LVON-SHOP', metaDescription: 'Discover the story behind LVON-SHOP, your destination for international modern home essentials.'
       },
       {
         title: 'FAQ', slug: 'faq', isPublished: true, sortOrder: 2,
         content: `<h2>Frequently Asked Questions</h2>`,
-        metaTitle: 'FAQ - RNO-SHOP', metaDescription: 'Frequently asked questions about RNO-SHOP products, shipping, and returns.'
+        metaTitle: 'FAQ - LVON-SHOP', metaDescription: 'Frequently asked questions about LVON-SHOP products, shipping, and returns.'
       },
       {
-        title: 'The RNO Fund', slug: 'the-rno-fund', isPublished: true, sortOrder: 3,
-        content: `<h2>The RNO Fund</h2><p>The RNO Fund supports communities and environmental initiatives around the world. A portion of every purchase goes directly to causes we care about.</p><p>When you shop at RNO-SHOP, you're not just bringing beauty into your home — you're helping to make a positive impact on communities and the planet.</p>`,
-        metaTitle: 'The RNO Fund - RNO-SHOP', metaDescription: 'Learn about the RNO Fund, supporting communities and environmental initiatives.'
+        title: 'The LVON Fund', slug: 'the-lvon-fund', isPublished: true, sortOrder: 3,
+        content: `<h2>The LVON Fund</h2><p>The LVON Fund supports communities and environmental initiatives around the world. A portion of every purchase goes directly to causes we care about.</p><p>When you shop at LVON-SHOP, you're not just bringing beauty into your home — you're helping to make a positive impact on communities and the planet.</p>`,
+        metaTitle: 'The LVON Fund - LVON-SHOP', metaDescription: 'Learn about the LVON Fund, supporting communities and environmental initiatives.'
       },
     ],
   });
@@ -156,8 +156,8 @@ async function main() {
       { question: 'Do you offer local delivery?', answer: 'Yes! We offer local delivery in Los Angeles on Fridays for $15, and same-day delivery Monday through Friday for $30.', category: 'Shipping & Returns', sortOrder: 4 },
       { question: 'How long does shipping take?', answer: 'Standard shipping takes 3-7 business days within the continental US. Express shipping takes 1-2 business days.', category: 'Shipping & Returns', sortOrder: 5 },
       { question: 'What is the Estate Membership?', answer: 'The Estate Membership is our annual subscription program. Members receive free shipping on all orders, seasonal gifts, 20% off gift sets, and exclusive access to limited-edition products.', category: 'Membership', sortOrder: 6 },
-      { question: 'Can I visit the store?', answer: 'RNO-SHOP is an online-only store. We occasionally host seasonal pop-up shops and events — sign up for our newsletter to stay informed.', category: 'General', sortOrder: 7 },
-      { question: 'How can I contact customer service?', answer: 'You can reach our team at hello@rno-shop.com, Monday through Friday, 10am to 5pm.', category: 'General', sortOrder: 8 },
+      { question: 'Can I visit the store?', answer: 'LVON-SHOP is an online-only store. We occasionally host seasonal pop-up shops and events — sign up for our newsletter to stay informed.', category: 'General', sortOrder: 7 },
+      { question: 'How can I contact customer service?', answer: 'You can reach our team at hello@lvon-shop.com, Monday through Friday, 10am to 5pm.', category: 'General', sortOrder: 8 },
     ],
   });
 
@@ -167,7 +167,7 @@ async function main() {
   await prisma.membership.create({
     data: {
       name: 'Estate Membership', slug: 'estate-membership', price: 95, durationMonths: 12,
-      description: 'Join RNO-SHOP and enjoy a year of premium benefits: free shipping, seasonal gifts, exclusive discounts, and more.',
+      description: 'Join LVON-SHOP and enjoy a year of premium benefits: free shipping, seasonal gifts, exclusive discounts, and more.',
       benefits: JSON.stringify(['Free shipping on every order', 'Seasonal gifts (4 per year)', '20% off gift sets', 'Early access to new products', 'Exclusive member-only products']),
     },
   });
@@ -184,9 +184,9 @@ async function main() {
   // ==================== Site Settings ====================
   await prisma.siteSetting.createMany({
     data: [
-      { key: 'site_name', value: 'RNO-SHOP', group: 'general' },
+      { key: 'site_name', value: 'LVON-SHOP', group: 'general' },
       { key: 'tagline', value: 'International Modern Home', group: 'general' },
-      { key: 'contact_email', value: 'hello@rno-shop.com', group: 'general' },
+      { key: 'contact_email', value: 'hello@lvon-shop.com', group: 'general' },
       { key: 'contact_phone', value: '', group: 'general' },
       { key: 'shipping_standard_fee', value: '10', group: 'shipping' },
       { key: 'shipping_express_fee', value: '25', group: 'shipping' },
@@ -210,7 +210,7 @@ async function main() {
   console.log('✓ Sample address created');
 
   console.log('\n✅ Seed complete!');
-  console.log('   Admin: admin@rno-shop.com / password123');
+  console.log('   Admin: admin@lvon-shop.com / password123');
   console.log('   Customer: customer@example.com / password123\n');
 }
 

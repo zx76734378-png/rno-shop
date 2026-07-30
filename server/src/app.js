@@ -131,7 +131,7 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 
 // ==================== Start ====================
 app.listen(PORT, () => {
-  console.log(`\n🏠 RNO-SHOP API running on port ${PORT}`);
+  console.log(`\n🏠 LVON-SHOP API running on port ${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
   if (!isProduction) {
     console.log(`   Frontend:   http://localhost:5173`);

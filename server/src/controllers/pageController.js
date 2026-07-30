@@ -78,7 +78,7 @@ async function subscribeMembership(req, res, next) {
       create: { userId: req.user.id, membershipId: membership.id, startDate: new Date(), endDate },
     });
 
-    res.status(201).json({ membership: userMembership, message: 'Welcome to RNO-SHOP!' });
+    res.status(201).json({ membership: userMembership, message: 'Welcome to LVON-SHOP!' });
   } catch (err) {
     next(err);
   }

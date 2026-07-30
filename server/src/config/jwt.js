@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'rno-shop-dev-secret-do-not-use-in-prod');
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || (process.env.NODE_ENV === 'production' ? null : 'rno-shop-dev-refresh-do-not-use-in-prod');
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'lvon-shop-dev-secret-do-not-use-in-prod');
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || (process.env.NODE_ENV === 'production' ? null : 'lvon-shop-dev-refresh-do-not-use-in-prod');
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '8h';
 const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
 
@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
   if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
     throw new Error('CRITICAL: JWT_SECRET and JWT_REFRESH_SECRET must be set in production environment');
   }
-  if (JWT_SECRET === 'rno-shop-dev-secret-do-not-use-in-prod' || JWT_REFRESH_SECRET === 'rno-shop-dev-refresh-do-not-use-in-prod') {
+  if (JWT_SECRET === 'lvon-shop-dev-secret-do-not-use-in-prod' || JWT_REFRESH_SECRET === 'lvon-shop-dev-refresh-do-not-use-in-prod') {
     throw new Error('CRITICAL: Do not use dev JWT secrets in production! Set JWT_SECRET and JWT_REFRESH_SECRET.');
   }
 }

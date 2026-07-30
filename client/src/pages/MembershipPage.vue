@@ -44,7 +44,7 @@ async function subscribe() {
   loading.value = true; message.value = ''; error.value = '';
   try {
     await api.post('/memberships/subscribe', { membershipId: membership.value.id });
-    message.value = 'Thank you for joining! Welcome to RNO-SHOP.';
+    message.value = 'Thank you for joining! Welcome to LVON-SHOP.';
   } catch (err) {
     error.value = err.response?.data?.error || 'Something went wrong.';
   }

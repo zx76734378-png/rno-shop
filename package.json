@@ -1,8 +1,8 @@
 {
-  "name": "rno-shop",
+  "name": "lvon-shop",
   "version": "1.0.0",
   "private": true,
-  "description": "RNO-SHOP - Full Stack E-commerce",
+  "description": "LVON-SHOP - Full Stack E-commerce",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:admin\"",
     "dev:server": "cd server && npm run dev",
